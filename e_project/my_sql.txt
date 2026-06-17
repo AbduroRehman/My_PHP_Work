@@ -1,3 +1,7 @@
+DB name is care_db
+
+
+
 CREATE DATABASE care_db;
 USE care_db;
 
