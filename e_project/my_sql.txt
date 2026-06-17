@@ -1,0 +1,49 @@
+CREATE DATABASE care_db;
+USE care_db;
+
+CREATE cities (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE
+);
+
+CREATE TABLE IF users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('Administrator', 'Doctor', 'Patient') NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    address TEXT NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    city_id INT,
+    specialty VARCHAR(100),
+    availability VARCHAR(100),
+    FOREIGN KEY (city_id) REFERENCES cities(id) ON DELETE SET NULL
+);
+
+CREATE TABLE IF appointments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    patient_id INT NOT NULL,
+    doctor_id INT NOT NULL,
+    appointment_date DATE NOT NULL,
+    status VARCHAR(50) DEFAULT 'Pending',
+    FOREIGN KEY (patient_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (doctor_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+INSERT INTO cities (name) VALUES 
+('Karachi'), ('Lahore'), ('Faisalabad'), ('Rawalpindi'), ('Gujranwala'), 
+('Peshawar'), ('Multan'), ('Hyderabad'), ('Islamabad'), ('Quetta'), 
+('Sargodha'), ('Sialkot'), ('Bahawalpur'), ('Sukkur'), ('Jhang'), 
+('Sheikhupura'), ('Larkana'), ('Gujrat'), ('Mardan'), ('Kasur'), 
+('Rahim Yar Khan'), ('Sahiwal'), ('Okara'), ('Wah Cantonment'), 
+('Dera Ghazi Khan'), ('Mirpur Khas'), ('Nawabshah'), ('Chiniot'), 
+('Kamoke');
+
+
+ALTER TABLE users DROP FOREIGN KEY IF EXISTS users_ibfk_1;
+ALTER TABLE appointments DROP FOREIGN KEY IF EXISTS appointments_ibfk_1;
+ALTER TABLE appointments DROP FOREIGN KEY IF EXISTS appointments_ibfk_2;
+
+
+ALTER TABLE users MODIFY city_id VARCHAR(100) NULL;
